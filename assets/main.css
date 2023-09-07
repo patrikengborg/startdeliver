@@ -7,3 +7,9 @@
     @apply font-sans antialiased;
   }
 }
+
+@layer components {
+  .page-headline {
+    @apply font-bold text-2xl mb-4;
+  }
+}
