@@ -9,8 +9,17 @@ module.exports = {
     "./app.vue",
   ],
   theme: {
+    container: {
+      center: true,
+      padding: "2rem",
+    },
+
+    fontFamily: {
+      sans: ["IBM Plex Sans", "ui-sans-serif", "system-ui"],
+      "sans-alt": ["Lato", "ui-sans-serif", "system-ui"],
+    },
+
     extend: {},
   },
   plugins: [],
-}
-
+};
