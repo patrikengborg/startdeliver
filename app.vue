@@ -1,19 +1,32 @@
 <template>
   <div class="container my-10 max-w-4xl">
-    <header class="border-b pb-3 mb-6 grid grid-cols-3 items-end">
-      <figure class="flex items-end gap-2 font-sans-alt">
+    <header
+      class="border-b relative z-10 pb-3 mb-6 grid grid-cols-3 items-end sticky top-0 bg-white"
+    >
+      <NuxtLink to="/" class="flex items-end gap-2 font-sans-alt">
         <img class="w-20" src="@/assets/logo.png" />
         <h1
-          class="font-bold uppercase mb-2 tracking-tight text-2xl sr-only md:not-sr-only"
+          class="font-bold mb-2 uppercase tracking-tight text-2xl hidden md:block"
         >
           Dev app
         </h1>
-      </figure>
+      </NuxtLink>
 
       <nav>
         <ul class="flex justify-center uppercase gap-4 font-medium">
-          <li><a href="/">Home</a></li>
-          <li><a href="/customers">Customers</a></li>
+          <li>
+            <NuxtLink to="/" :class="{ 'text-black': route.path !== '/' }">
+              Home
+            </NuxtLink>
+          </li>
+          <li>
+            <NuxtLink
+              :class="{ 'text-black': route.path !== '/customers' }"
+              to="/customers"
+            >
+              Customers
+            </NuxtLink>
+          </li>
         </ul>
       </nav>
 
@@ -39,10 +52,12 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import "@fontsource/ibm-plex-sans/400.css";
 import "@fontsource/ibm-plex-sans/500.css";
 import "@fontsource/ibm-plex-sans/700.css";
 import "@fontsource/lato/400.css";
 import "@fontsource/lato/700.css";
+
+const route = useRoute();
 </script>

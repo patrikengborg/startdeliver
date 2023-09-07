@@ -57,9 +57,3 @@ function formatMonth(dateString) {
   })
 }
 </script>
-
-<style>
-.label {
-  @apply font-bold opacity-50 uppercase;
-}
-</style>
