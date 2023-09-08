@@ -1,7 +1,7 @@
 <template>
   <div>
     <p class="mb-4"><NuxtLink to="/customers">← Back to customers</NuxtLink></p>
-    <div class="flex items-end justify-between">
+    <div class="md:flex items-end justify-between">
       <h1 class="page-headline">{{ customer.name }}</h1>
       <p class="text-gray-500 mb-5">
         Member since: <strong class="font-medium">{{ formatMonth(customer.createdAt) }}</strong>
@@ -23,9 +23,7 @@ const { data: customers } = await useFetch('https://startdeliver-mock-api.glitch
 const route = useRoute()
 
 const customer = computed(() => {
-  return customers.value.find((item) => {
-    return item.id === Number(route.params.id)
-  })
+  return customers.value.find((item) => item.id === Number(route.params.id))
 })
 
 const arr = computed(() => formatCurrency(customer.value.arr))

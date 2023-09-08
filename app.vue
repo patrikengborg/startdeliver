@@ -4,7 +4,7 @@
       class="border-b relative z-10 pb-3 mb-10 grid grid-cols-3 items-end sticky top-0 bg-white"
     >
       <NuxtLink to="/" class="flex items-end gap-2 font-sans-alt -mb-1">
-        <img class="w-16" src="@/assets/logo.png" />
+        <img class="w-10 md:w-16" src="@/assets/logo.png" />
         <h1
           class="font-bold mb-1 uppercase tracking-tight text-2xl hidden md:block"
         >
@@ -13,7 +13,7 @@
       </NuxtLink>
 
       <nav>
-        <ul class="flex justify-center uppercase gap-6 font-medium">
+        <ul class="flex justify-center uppercase gap-3 md:gap-6 font-medium">
           <li>
             <NuxtLink to="/" :class="{ 'text-black': route.path !== '/' }">
               Home
@@ -52,7 +52,7 @@
                 <button
                   type="button"
                   @click="rickRolled = true"
-                  class="block text-red-600"
+                  class="block text-red-600 hover:underline w-full text-left"
                 >
                   Logout
                 </button>
