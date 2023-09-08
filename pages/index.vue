@@ -3,57 +3,50 @@
     <h2 class="page-headline">Home</h2>
 
     <dl class="grid md:grid-cols-2 gap-4 md:gap-12 mb-10">
-      <div class="bg-gray-100 p-5 rounded" v-for="{ label, sum } in stats">
-        <dt class="label mb-2 border-b border-gray-300">{{ label }}</dt>
-        <dd class="text-5xl font-bold tracking-tight">{{ sum }}</dd>
-      </div>
+      <StatBadge v-for="{ label, value } in stats" :label="label" :value="value" />
     </dl>
 
-    <h3 class="label mb-4 border-b pb-2">New ARR per month</h3>
-
-    <ul class="grid grid-cols-6 gap-8 items-end">
-      <li v-for="item in report.data" class="">
-        <div class="bg-blue-600 rounded-t-lg" :style="{ height: `${item.arr / 1000}px` }"></div>
-        <time class="uppercase font-medium opacity-30 text-sm">{{ formatMonth(item.month) }}</time>
-      </li>
-    </ul>
+    <div>
+      <h3 class="label mb-4">New ARR per month</h3>
+      <ul class="grid grid-cols-6 gap-8 items-end">
+        <li v-for="(item, idx) in report.data" class="">
+          <div
+            :class="loaded ? 'scale-y-100' : 'scale-y-0'"
+            class="pt-4 text-center bg-blue-600 rounded-t-lg text-blue-300 duration-500 transition-transform origin-bottom"
+            :style="{ height: `${item.arr / 1000}px`, transitionDelay: `${100 * idx}ms` }"
+          >
+            {{ formatNumber(item.arr) }}
+          </div>
+          <time
+            class="uppercase font-medium text-blue-200 text-center py-1 text-sm bg-blue-800 block"
+            >{{ formatMonth(item.month) }}</time
+          >
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script setup>
-const { data: report } = await useFetch('https://startdeliver-mock-api.glitch.me/report')
+const { data: report, pending } = await useFetch('https://startdeliver-mock-api.glitch.me/report')
 
-function getSum(arr, key) {
-  return arr.reduce((acc, currentValue) => {
-    return acc + currentValue[key]
-  }, 0)
-}
+const loaded = ref(false)
 
-const currencyFormatter = new Intl.NumberFormat('en-US', {
-  style: 'currency',
-  currency: 'USD',
-  notation: 'compact',
-  compactDisplay: 'short'
+onMounted(() => {
+  setTimeout(() => {
+    loaded.value = true
+  }, 200)
 })
 
-const numFormatter = new Intl.NumberFormat('sv-SE')
+function getSum(arr, key) {
+  return arr.reduce((acc, currentValue) => acc + currentValue[key], 0)
+}
 
 const stats = computed(() => [
   {
     label: 'ARR',
-    sum: currencyFormatter.format(getSum(report.value.data, 'arr'))
+    value: formatCurrency(getSum(report.value.data, 'arr'))
   },
-  { label: 'Seats', sum: numFormatter.format(getSum(report.value.data, 'seats')) }
+  { label: 'Seats', value: formatNumber(getSum(report.value.data, 'seats')) }
 ])
-
-function formatMonth(dateString) {
-  let [year, month] = dateString.split('-')
-  year = parseInt(year)
-  month = parseInt(month) - 1 // Subtract 1 from the month to match JavaScript's month numbering (0-11).
-
-  return new Date(year, month).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short'
-  })
-}
 </script>
